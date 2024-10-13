@@ -64,6 +64,19 @@ const districts = [
   { code: 'WA', name: 'Washingtone', votes: 12, default: 'dem!' },
 ];
 
+var total_votes = 0;
+for (let i = 0; i < districts.length; i++) {
+  total_votes += districts[i]['votes'];
+}
+if (total_votes != 538) {
+  window.alert("Incorrect data, total_votes = " + total_votes);
+}
+if ((total_votes % 2) == 0) {
+  // Model the tiebreaking role of congress and/or unfaithful electors by
+  // making them a district with one vote, but don't count it in total_votes.
+  districts.push({ code: 'TB', name: 'Tiebreaker', votes: 1, default: 'tossup' })
+}
+
 const district_map = {};
 districts.forEach(d => { district_map[d.code] = d; })
 
@@ -81,14 +94,6 @@ const party_name = {
   'rep': 'Republican',
   'dem': 'Democrat',
 };
-
-var total_votes = 0;
-for (let i = 0; i < districts.length; i++) {
-  total_votes += districts[i]['votes'];
-}
-if (total_votes != 538) {
-  window.alert("Incorrect data, total_votes = " + total_votes);
-}
 
 function populate_districts() {
   var table = document.getElementById('districts');
@@ -189,10 +194,6 @@ function calculate_paths() {
   // Avoid generating non-minimal paths by sorting our districts in
   // descending order by votes.
   unsure_districts.sort((d1, d2) => d2.votes - d1.votes);
-
-  // Model the tiebreaking role of congress by listing them at the end of the
-  // unsure_districts with one vote.
-  unsure_districts.push({ code: 'TB', votes: 1 })
 
   var sentence = "";
   if (base_votes >= votes_to_win) {
