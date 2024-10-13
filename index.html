@@ -10,10 +10,21 @@ body {
   color: #dddddd;
   font-family: Verdana, sans-serif;
 }
-#districts label {
-  display: inline-block;
-  width: 300px;
+div.options {
+  margin-bottom: 1em;
 }
+td.votes {
+  padding-left: 1em;
+  padding-right: 1em;
+  text-align: right;
+}
+body.show_all tr.likely {
+  display: table-row;
+}
+body tr.likely {
+  display: none;
+}
+
 select {
   background-color: #222222;
   color: #dddddd;
@@ -48,11 +59,18 @@ select:has(> option[value="rep?"]:checked) {
 <h1>Presidential Election Victory Path Calculator</h1>
 
 <h2>Electoral Districts</h2>
-<div id="districts"></div>
+<div class="options">
+<label for="show_all">
+  <input type="checkbox" id="show_all">
+  Show all
+</label>
+</div>
 
-<h2>Options</h2>
+<table id="districts"></table>
 
-<div>
+<h2>Calculation</h2>
+
+<div class="options">
 <label for="party">Select Party:</label>
 <select id="party">
     <option value="dem">Democrat (Kamala Harris)</option>

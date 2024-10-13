@@ -93,12 +93,16 @@ if (total_votes != 538) {
 var votes_to_win = total_votes / 2 + 1
 
 function populate_districts() {
-  var districtsDiv = document.getElementById('districts');
+  var table = document.getElementById('districts');
   districts.forEach(district => {
-    var districtDiv = document.createElement('div');
-    var label = document.createElement('label');
-    label.textContent = `${district.name} (${district.votes} votes): `;
+    var td_name = document.createElement('td');
+    td_name.className = 'name';
+    td_name.textContent = district.name;
+    var td_votes = document.createElement('td');
+    td_votes.className = 'votes';
+    td_votes.textContent = district.votes;
     var select = document.createElement('select');
+    select.className = 'call';
     select.dataset.code = district.code;
     Object.entries(calls).forEach(([code, call]) => {
       var option = document.createElement('option');
@@ -106,10 +110,20 @@ function populate_districts() {
       option.textContent = call['name'];
       select.appendChild(option);
     });
-    select.value = district['default']
-    districtDiv.appendChild(label);
-    districtDiv.appendChild(select);
-    districtsDiv.appendChild(districtDiv);
+    var call_code = district['default'];
+    select.value = call_code;
+    var call = calls[call_code];
+    var td_call = document.createElement('td');
+    td_call.className = 'select';
+    td_call.appendChild(select);
+    var row = document.createElement('tr');
+    if (call.miracle_points > 50) {
+      row.className = "likely";
+    }
+    row.appendChild(td_name);
+    row.appendChild(td_votes);
+    row.appendChild(td_call);
+    table.appendChild(row);
     district_select_map[district.code] = select
   });
 }
@@ -188,6 +202,10 @@ function displayPaths(sentence, paths) {
   });
 }
 document.getElementById('calculate').addEventListener('click', calculate_paths);
+
+document.getElementById('show_all').addEventListener('change', function() {
+  document.body.classList.toggle('show_all', this.checked);
+});
 
 // Populate districts on page load
 populate_districts();
