@@ -210,11 +210,11 @@ function calculate_paths() {
 
   var sentence = "";
   if (base_votes >= votes_to_win) {
-    output_str(`The ${party_name[party]} has ${base_votes} votes (likely + leaning), which is enough to win.`);
+    output_str(`The ${party_name[party]} has ${base_votes} votes (likely + leaning), which is enough to win!`);
     return;
   }
   if (base_votes + tossup_votes < votes_to_win) {
-    output_str(`The ${party_name[party]} cannot get more than ${base_votes + tossup_votes} votes (likely + leaning + toss-up).`)
+    output_str(`The ${party_name[party]} cannot get more than ${base_votes + tossup_votes} votes (likely + leaning + toss-up)!`)
     return;
   }
 
