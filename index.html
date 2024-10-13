@@ -24,7 +24,6 @@ body.show_all tr.likely {
 body tr.likely {
   display: none;
 }
-
 select {
   background-color: #222222;
   color: #dddddd;
@@ -53,6 +52,9 @@ select:has(> option[value="rep?"]:checked) {
   background-color: #e60000;
   color: white;
 }
+table.paths td {
+  text-align: center;
+}
 </style>
 </head>
 
@@ -80,7 +82,6 @@ select:has(> option[value="rep?"]:checked) {
 
 <button id="calculate">Calculate paths</button>
 
-<h3 id="pathsSentence"></h3>
-<ul id="paths"></ul>
+<div id="output"></div>
 
 <script src="script.js"></script>

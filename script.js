@@ -126,14 +126,49 @@ function populate_districts() {
   });
 }
 
+var output_div = document.getElementById('output');
+
+function output_clear() {
+  output_div.textContent = "";  // clear the output
+}
+
+function output_str(obj) {
+  var p = document.createElement('p');
+  p.textContent = obj
+  output_div.appendChild(p);
+}
+
+function output_paths(unsure_districts, paths) {
+  var table = document.createElement('table');
+  table.className = "paths";
+  paths.forEach(path => {
+    console.log(path)
+    var row = document.createElement('tr');
+    row.className = "path";
+    unsure_districts.forEach(district => {
+      var td = document.createElement('td');
+      console.log(district.code)
+      if (path.includes(district.code)) {  // calling includes could be slow
+        td.textContent = district.code;
+      }
+      else {
+        td.textContent = "-";
+      }
+      row.appendChild(td);
+    })
+    table.appendChild(row);
+  });
+  output_div.appendChild(table);
+}
+
+// TODO: calculate possibilities of a tie somewhere
 function calculate_paths() {
+
   const party = document.getElementById('party').value;
 
   var votes_to_win = total_votes / 2 + 1;
-  // The Republican most likely wins if it's a tie.
-  if (((total_votes % 2) == 0) && party == 'rep') { votes_to_win -= 1; }
 
-  const tossup_districts = [];
+  const unsure_districts = [];
 
   let base_votes = 0;
   let tossup_votes = 0;
@@ -144,33 +179,31 @@ function calculate_paths() {
     }
     else if (call.party == null) {
       tossup_votes += district.votes;
-      tossup_districts.push(district);
+      unsure_districts.push(district);
     }
   });
 
+  // Avoid generating non-minimal paths by sorting our districts in
+  // descending order by votes.
+  unsure_districts.sort((d1, d2) => d2.votes - d1.votes);
+
   var sentence = "";
   if (base_votes >= votes_to_win) {
-    sentence = `The ${party_name[party]} wins with at least ${base_votes} votes.`
-    displayPaths(sentence, []);
+    output_str(`The ${party_name[party]} wins with at least ${base_votes} votes.`);
     return;
   }
   if (base_votes + tossup_votes <= votes_to_win) {
-    sentence = `The ${party_name[party]} loses with at most ${base_votes + tossup_votes} votes.`
-    displayPaths(sentence, []);
+    output_str(`The ${party_name[party]} loses with at most ${base_votes + tossup_votes} votes.`)
     return;
   }
 
   const votes_needed = votes_to_win - base_votes;
-  const paths = find_paths(tossup_districts, votes_needed);
-  sentence = `The ${party_name[party]} needs ${votes_needed} votes.`
-  displayPaths(sentence, paths);
+  const paths = find_paths(unsure_districts, votes_needed);
+  output_str(`The ${party_name[party]} needs ${votes_needed} votes.`)
+  output_paths(unsure_districts, paths);
 }
 
 function find_paths(unsure_districts, votes_needed) {
-  // We avoid a need to filter out non-minimal paths by sorting our districts
-  // in descending order by votes.
-  unsure_districts = unsure_districts.slice().sort((d1, d2) => d2.votes - d1.votes);
-
   const paths = [];
 
   function dfs(path, remaining_votes, index) {
@@ -181,7 +214,7 @@ function find_paths(unsure_districts, votes_needed) {
 
     if (index >= unsure_districts.length) return;
 
-    dfs([...path, unsure_districts[index].name],
+    dfs([...path, unsure_districts[index].code],
       remaining_votes - unsure_districts[index].votes, index + 1);
     dfs(path, remaining_votes, index + 1);
   }
@@ -191,18 +224,6 @@ function find_paths(unsure_districts, votes_needed) {
   return paths;
 }
 
-// Function to display the calculated paths
-function displayPaths(sentence, paths) {
-  document.getElementById('pathsSentence').textContent = sentence
-
-  const pathsList = document.getElementById('paths');
-  pathsList.innerHTML = '';
-  paths.forEach(path => {
-    const listItem = document.createElement('li');
-    listItem.textContent = `Path: ${path.join(', ')}`;
-    pathsList.appendChild(listItem);
-  });
-}
 document.getElementById('calculate').addEventListener('click', calculate_paths);
 
 document.getElementById('show_all').addEventListener('change', function() {
