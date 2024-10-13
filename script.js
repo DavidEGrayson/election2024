@@ -90,8 +90,6 @@ if (total_votes != 538) {
   window.alert("Incorrect data, total_votes = " + total_votes);
 }
 
-var votes_to_win = total_votes / 2 + 1
-
 function populate_districts() {
   var table = document.getElementById('districts');
   districts.forEach(district => {
@@ -130,6 +128,11 @@ function populate_districts() {
 
 function calculate_paths() {
   const party = document.getElementById('party').value;
+
+  var votes_to_win = total_votes / 2 + 1;
+  // The Republican most likely wins if it's a tie.
+  if (((total_votes % 2) == 0) && party == 'rep') { votes_to_win -= 1; }
+
   const tossup_districts = [];
 
   let base_votes = 0;
@@ -158,35 +161,34 @@ function calculate_paths() {
   }
 
   const votes_needed = votes_to_win - base_votes;
-  const paths = findPaths(tossup_districts, votes_needed);
+  const paths = find_paths(tossup_districts, votes_needed);
   sentence = `The ${party_name[party]} needs ${votes_needed} votes.`
   displayPaths(sentence, paths);
 }
 
-// Helper function to find minimal victory paths
-function findPaths(tossUpDistricts, votesNeeded) {
-    const paths = [];
+function find_paths(unsure_districts, votes_needed) {
+  // We avoid a need to filter out non-minimal paths by sorting our districts
+  // in descending order by votes.
+  unsure_districts = unsure_districts.slice().sort((d1, d2) => d2.votes - d1.votes);
 
-    function dfs(path, remainingVotes, idx) {
-        if (remainingVotes <= 0) {
-            paths.push(path);
-            return;
-        }
+  const paths = [];
 
-        if (idx >= tossUpDistricts.length) return;
-
-        dfs([...path, tossUpDistricts[idx].name], remainingVotes - tossUpDistricts[idx].votes, idx + 1);
-        dfs(path, remainingVotes, idx + 1);
+  function dfs(path, remaining_votes, index) {
+    if (remaining_votes <= 0) {
+      paths.push(path);
+      return;
     }
 
-    dfs([], votesNeeded, 0);
+    if (index >= unsure_districts.length) return;
 
-    // Filter out non-minimal paths
-    return paths.filter(path => {
-        return !paths.some(otherPath =>
-            otherPath !== path && otherPath.every(district => path.includes(district))
-        );
-    });
+    dfs([...path, unsure_districts[index].name],
+      remaining_votes - unsure_districts[index].votes, index + 1);
+    dfs(path, remaining_votes, index + 1);
+  }
+
+  dfs([], votes_needed, 0);
+
+  return paths;
 }
 
 // Function to display the calculated paths
