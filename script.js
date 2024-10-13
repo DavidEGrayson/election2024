@@ -129,7 +129,7 @@ function populate_districts() {
 var output_div = document.getElementById('output');
 
 function output_clear() {
-  output_div.textContent = "";  // clear the output
+  output_div.innerHTML = "";  // clear the output
 }
 
 function output_str(obj) {
@@ -142,12 +142,10 @@ function output_paths(unsure_districts, paths) {
   var table = document.createElement('table');
   table.className = "paths";
   paths.forEach(path => {
-    console.log(path)
     var row = document.createElement('tr');
     row.className = "path";
     unsure_districts.forEach(district => {
       var td = document.createElement('td');
-      console.log(district.code)
       if (path.includes(district.code)) {  // calling includes could be slow
         td.textContent = district.code;
       }
@@ -161,8 +159,8 @@ function output_paths(unsure_districts, paths) {
   output_div.appendChild(table);
 }
 
-// TODO: calculate possibilities of a tie somewhere
 function calculate_paths() {
+  output_clear();
 
   const party = document.getElementById('party').value;
 
@@ -186,6 +184,10 @@ function calculate_paths() {
   // Avoid generating non-minimal paths by sorting our districts in
   // descending order by votes.
   unsure_districts.sort((d1, d2) => d2.votes - d1.votes);
+
+  // Model the tiebreaking role of congress by listing them at the end of the
+  // unsure_districts with one vote.
+  unsure_districts.push({ code: 'TB', votes: 1 })
 
   var sentence = "";
   if (base_votes >= votes_to_win) {
