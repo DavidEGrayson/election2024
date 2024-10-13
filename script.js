@@ -93,6 +93,9 @@ if (total_votes != 538) {
 function populate_districts() {
   var table = document.getElementById('districts');
   districts.forEach(district => {
+    var td_code = document.createElement('td');
+    td_code.className = 'code';
+    td_code.textContent = district.code;
     var td_name = document.createElement('td');
     td_name.className = 'name';
     td_name.textContent = district.name;
@@ -118,6 +121,7 @@ function populate_districts() {
     if (call.miracle_points > 50) {
       row.className = "likely";
     }
+    row.appendChild(td_code);
     row.appendChild(td_name);
     row.appendChild(td_votes);
     row.appendChild(td_call);
@@ -146,6 +150,7 @@ function output_paths(unsure_districts, paths) {
     row.className = "path";
     unsure_districts.forEach(district => {
       var td = document.createElement('td');
+      td.className = 'code';
       if (path.includes(district.code)) {  // calling includes could be slow
         td.textContent = district.code;
       }
