@@ -151,12 +151,13 @@ function output_paths(unsure_districts, paths) {
   var table = document.createElement('table');
   table.className = "paths";
   paths.forEach(path => {
+    var district_list = path.code_list;
     var row = document.createElement('tr');
     row.className = "path";
     unsure_districts.forEach(district => {
       var td = document.createElement('td');
       td.className = 'code';
-      if (path.includes(district.code)) {  // calling includes could be slow
+      if (district_list.includes(district.code)) {  // calling includes could be slow
         td.textContent = district.code;
       }
       else {
@@ -164,9 +165,21 @@ function output_paths(unsure_districts, paths) {
       }
       row.appendChild(td);
     })
+    var td_votes = document.createElement('td')
+    td_votes.className = 'votes';
+    td_votes.textContent = '+' + path.votes;
+    row.appendChild(td_votes);
     table.appendChild(row);
   });
   output_div.appendChild(table);
+}
+
+function calculate_path_stats(code_list) {
+  var path = { votes: 0, code_list: code_list }
+  code_list.forEach(code => {
+    path.votes += district_map[code].votes;
+  });
+  return path;
 }
 
 function calculate_paths() {
@@ -206,8 +219,9 @@ function calculate_paths() {
   }
 
   const votes_needed = votes_to_win - base_votes;
-  const paths = find_paths(unsure_districts, votes_needed);
   output_str(`The ${party_name[party]} needs ${votes_needed} votes.`)
+  var paths = find_paths(unsure_districts, votes_needed);
+  paths = paths.map(calculate_path_stats)
   output_paths(unsure_districts, paths);
 }
 
