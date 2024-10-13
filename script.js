@@ -84,8 +84,8 @@ const district_select_map = {};
 
 const calls = {
   'tossup': { name: 'Toss-up', party: null, miracle_points: 0 },
-  'rep?': { name: 'Republican (leans)', party: 'rep', miracle_points: 10 },
-  'dem?': { name: 'Democrat (leans)', party: 'dem', miracle_points: 10 },
+  'rep?': { name: 'Republican (leans)', party: 'rep', miracle_points: 1 },
+  'dem?': { name: 'Democrat (leans)', party: 'dem', miracle_points: 1 },
   'rep!': { name: 'Republican (likely)', party: 'rep', miracle_points: 100 },
   'dem!': { name: 'Democrat (likely)', party: 'dem', miracle_points: 100 },
 };
@@ -210,16 +210,16 @@ function calculate_paths() {
 
   var sentence = "";
   if (base_votes >= votes_to_win) {
-    output_str(`The ${party_name[party]} wins with at least ${base_votes} votes.`);
+    output_str(`The ${party_name[party]} has ${base_votes} votes (likely + leaning), which is enough to win.`);
     return;
   }
-  if (base_votes + tossup_votes <= votes_to_win) {
-    output_str(`The ${party_name[party]} loses with at most ${base_votes + tossup_votes} votes.`)
+  if (base_votes + tossup_votes < votes_to_win) {
+    output_str(`The ${party_name[party]} cannot get more than ${base_votes + tossup_votes} votes (likely + leaning + toss-up).`)
     return;
   }
 
   const votes_needed = votes_to_win - base_votes;
-  output_str(`The ${party_name[party]} needs ${votes_needed} votes.`)
+  output_str(`The ${party_name[party]} has ${base_votes} votes (likely + leaning) and needs ${votes_needed} more.`)
   var paths = find_paths(unsure_districts, votes_needed);
   paths = paths.map(calculate_path_stats)
   output_paths(unsure_districts, paths);
