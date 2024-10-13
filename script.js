@@ -13,59 +13,61 @@ const districts = [
   // 10 more districts that appear to be at least barely contestable:
   { code: 'TX', name: 'Texas', votes: 40, default: 'rep?' },
   { code: 'FL', name: 'Florida', votes: 30, default: 'rep?' },
-  { code: 'OH', name: 'Ohio', votes: 17, default: 'dem?' },
   { code: 'VA', name: 'Virginia', votes: 13, default: 'rep?' },
+  { code: 'NE-2', name: 'Nebraska 2', votes: 1, default: 'dem?' },
+  { code: 'OH', name: 'Ohio', votes: 17, default: 'dem?' },
   { code: 'MN', name: 'Minnesota', votes: 10, default: 'dem?' },
-  { code: 'NM', name: 'New Mexico', votes: 5, default: 'rep?' },
+  { code: 'NM', name: 'New Mexico', votes: 5, default: 'dem?' },
   { code: 'NH', name: 'New Hampshire', votes: 4, default: 'dem?' },
   { code: 'ME', name: 'Maine', votes: 2, default: 'dem?' },
   { code: 'ME-2', name: 'Maine 2', votes: 1, default: 'dem?' },
-  { code: 'NE-2', name: 'Nebraska 2', votes: 1, default: 'rep?' },
 
   // Predictable districts
   { code: 'AL', name: 'Alabama', votes: 9, default: 'rep!' },
   { code: 'AK', name: 'Alaska', votes: 3, default: 'rep!' },
   { code: 'AR', name: 'Arkansas', votes: 6, default: 'rep!' },
-  { code: 'CA', name: 'California', votes: 54, default: 'dem!' },
-  { code: 'CO', name: 'Colorado', votes: 10, default: 'dem!' },
-  { code: 'CT', name: 'Connecticut', votes: 7, default: 'dem!' },
-  { code: 'DE', name: 'Delaware', votes: 3, default: 'dem!' },
-  { code: 'DC', name: 'District of Columbia', votes: 3, default: 'dem!' },
-  { code: 'HI', name: 'Hawaii', votes: 4, default: 'dem!' },
   { code: 'ID', name: 'Idaho', votes: 4, default: 'rep!' },
-  { code: 'IL', name: 'Illinois', votes: 19, default: 'dem!' },
   { code: 'ID', name: 'Indiana', votes: 11, default: 'rep!' },
   { code: 'IA', name: 'Iowa', votes: 6, default: 'rep!' },
   { code: 'KS', name: 'Kansas', votes: 6, default: 'rep!' },
   { code: 'KY', name: 'Kentucy', votes: 8, default: 'rep!' },
   { code: 'LA', name: 'Louisiana', votes: 8, default: 'rep!' },
-  { code: 'ME-1', name: 'Maine', votes: 1, default: 'dem!' },
-  { code: 'MD', name: 'Maryland', votes: 10, default: 'dem!' },
-  { code: 'MA', name: 'Massachusetts', votes: 11, default: 'dem!' },
   { code: 'MS', name: 'Mississippi', votes: 6, default: 'rep!' },
   { code: 'MO', name: 'Missouri', votes: 10, default: 'rep!' },
   { code: 'MT', name: 'Montana', votes: 4, default: 'rep!' },
   { code: 'NE', name: 'Nebraska', votes: 2, default: 'rep!' },
   { code: 'NE-1', name: 'Nebraska 1', votes: 1, default: 'rep!' },
   { code: 'NE-3', name: 'Nebraska 3', votes: 1, default: 'rep!' },
-  { code: 'NJ', name: 'New Jersey', votes: 14, default: 'dem!' },
-  { code: 'NY', name: 'New York', votes: 28, default: 'dem!' },
   { code: 'ND', name: 'North Dakota', votes: 3, default: 'rep!' },
   { code: 'OK', name: 'Oklahoma', votes: 7, default: 'rep!' },
-  { code: 'OR', name: 'Oregon', votes: 8, default: 'dem!' },
-  { code: 'RI', name: 'Rhode Island', votes: 4, default: 'dem!' },
   { code: 'SC', name: 'South Carolina', votes: 9, default: 'rep!' },
   { code: 'SD', name: 'South Dakota', votes: 3, default: 'rep!' },
   { code: 'TN', name: 'Tennessee', votes: 11, default: 'rep!' },
   { code: 'UT', name: 'Utah', votes: 6, default: 'rep!' },
-  { code: 'VT', name: 'Vermont', votes: 3, default: 'dem!' },
-  { code: 'WA', name: 'Washingtone', votes: 12, default: 'dem!' },
   { code: 'WV', name: 'West Virginia', votes: 4, default: 'rep!' },
   { code: 'WY', name: 'Wyoming', votes: 3, default: 'rep!' },
+  { code: 'CA', name: 'California', votes: 54, default: 'dem!' },
+  { code: 'CO', name: 'Colorado', votes: 10, default: 'dem!' },
+  { code: 'CT', name: 'Connecticut', votes: 7, default: 'dem!' },
+  { code: 'DE', name: 'Delaware', votes: 3, default: 'dem!' },
+  { code: 'DC', name: 'District of Columbia', votes: 3, default: 'dem!' },
+  { code: 'HI', name: 'Hawaii', votes: 4, default: 'dem!' },
+  { code: 'IL', name: 'Illinois', votes: 19, default: 'dem!' },
+  { code: 'ME-1', name: 'Maine', votes: 1, default: 'dem!' },
+  { code: 'MD', name: 'Maryland', votes: 10, default: 'dem!' },
+  { code: 'MA', name: 'Massachusetts', votes: 11, default: 'dem!' },
+  { code: 'NJ', name: 'New Jersey', votes: 14, default: 'dem!' },
+  { code: 'NY', name: 'New York', votes: 28, default: 'dem!' },
+  { code: 'OR', name: 'Oregon', votes: 8, default: 'dem!' },
+  { code: 'RI', name: 'Rhode Island', votes: 4, default: 'dem!' },
+  { code: 'VT', name: 'Vermont', votes: 3, default: 'dem!' },
+  { code: 'WA', name: 'Washingtone', votes: 12, default: 'dem!' },
 ];
 
 const district_map = {};
 districts.forEach(d => { district_map[d.code] = d; })
+
+const district_select_map = {};
 
 const calls = {
   'tossup': { name: 'Toss-up', party: null, miracle_points: 0 },
@@ -73,7 +75,12 @@ const calls = {
   'dem?': { name: 'Democrat (likely)', party: 'dem', miracle_points: 10 },
   'rep!': { name: 'Republican (100%)', party: 'rep', miracle_points: 100 },
   'dem!': { name: 'Democrat (100%)', party: 'dem', miracle_points: 100 },
-}
+};
+
+const party_name = {
+  'rep': 'Republican',
+  'dem': 'Democrat',
+};
 
 var total_votes = 0;
 for (let i = 0; i < districts.length; i++) {
@@ -103,43 +110,43 @@ function populate_districts() {
     districtDiv.appendChild(label);
     districtDiv.appendChild(select);
     districtsDiv.appendChild(districtDiv);
+    district_select_map[district.code] = select
   });
 }
 
-function calculatePaths() {
-  const selectedParty = document.getElementById('party').value;
-  const allDistricts = document.querySelectorAll('#districts select');
-  const tossUpDistricts = [];
+function calculate_paths() {
+  const party = document.getElementById('party').value;
+  const tossup_districts = [];
 
-  let baseVotes = 0;
-  let tossupVotes = 0;
-  allDistricts.forEach(select => {
-    const call = calls[select.value];
-    console.log(select.dataset.code);
-    const district = district_map[select.dataset.code];
-    console.log(district);
-    if (call.party == selectedParty) {
-      baseVotes += district.votes;
+  let base_votes = 0;
+  let tossup_votes = 0;
+  districts.forEach(district => {
+    const call = calls[district_select_map[district.code].value];
+    if (call.party == party) {
+      base_votes += district.votes;
     }
     else if (call.party == null) {
-      tossupVotes += district.votes;
-      tossUpDistricts.push(district);
+      tossup_votes += district.votes;
+      tossup_districts.push(district);
     }
   });
 
-  if (baseVotes >= votes_to_win) {
-    window.alert("Candidate always wins"); // TODO
-    displayPaths([]);
+  var sentence = "";
+  if (base_votes >= votes_to_win) {
+    sentence = `The ${party_name[party]} wins with at least ${base_votes} votes.`
+    displayPaths(sentence, []);
     return;
   }
-  if (baseVotes + tossupVotes <= votes_to_win) {
-    window.alert("No paths to victory (except maybe a tie)"); // TODO
-    displayPaths([]);
+  if (base_votes + tossup_votes <= votes_to_win) {
+    sentence = `The ${party_name[party]} loses with at most ${base_votes + tossup_votes} votes.`
+    displayPaths(sentence, []);
     return;
   }
 
-  const paths = findPaths(tossUpDistricts, votes_to_win - baseVotes);
-  displayPaths(paths);
+  const votes_needed = votes_to_win - base_votes;
+  const paths = findPaths(tossup_districts, votes_needed);
+  sentence = `The ${party_name[party]} needs ${votes_needed} votes.`
+  displayPaths(sentence, paths);
 }
 
 // Helper function to find minimal victory paths
@@ -169,23 +176,18 @@ function findPaths(tossUpDistricts, votesNeeded) {
 }
 
 // Function to display the calculated paths
-function displayPaths(paths) {
-    const victoryPathsList = document.getElementById('victoryPaths');
-    victoryPathsList.innerHTML = '';
+function displayPaths(sentence, paths) {
+  document.getElementById('pathsSentence').textContent = sentence
 
-    if (paths.length === 0) {
-        victoryPathsList.textContent = 'No toss-up districts needed. Candidate already has enough votes!';
-    } else {
-        paths.forEach(path => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `Path: ${path.join(', ')}`;
-            victoryPathsList.appendChild(listItem);
-        });
-    }
+  const pathsList = document.getElementById('paths');
+  pathsList.innerHTML = '';
+  paths.forEach(path => {
+    const listItem = document.createElement('li');
+    listItem.textContent = `Path: ${path.join(', ')}`;
+    pathsList.appendChild(listItem);
+  });
 }
-
-// Add event listener for the "Calculate" button
-document.getElementById('calculate').addEventListener('click', calculatePaths);
+document.getElementById('calculate').addEventListener('click', calculate_paths);
 
 // Populate districts on page load
 populate_districts();
