@@ -71,10 +71,10 @@ const district_select_map = {};
 
 const calls = {
   'tossup': { name: 'Toss-up', party: null, miracle_points: 0 },
-  'rep?': { name: 'Republican (likely)', party: 'rep', miracle_points: 10 },
-  'dem?': { name: 'Democrat (likely)', party: 'dem', miracle_points: 10 },
-  'rep!': { name: 'Republican (100%)', party: 'rep', miracle_points: 100 },
-  'dem!': { name: 'Democrat (100%)', party: 'dem', miracle_points: 100 },
+  'rep?': { name: 'Republican (leans)', party: 'rep', miracle_points: 10 },
+  'dem?': { name: 'Democrat (leans)', party: 'dem', miracle_points: 10 },
+  'rep!': { name: 'Republican (likely)', party: 'rep', miracle_points: 100 },
+  'dem!': { name: 'Democrat (likely)', party: 'dem', miracle_points: 100 },
 };
 
 const party_name = {

@@ -4,6 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Presidential Victory Path Calculator</title>
+<style>
+select:has(> option[value="tossup"]:checked) {
+    background-color: gray;
+    color: white;
+}
+select:has(> option[value="dem!"]:checked) {
+    background-color: #031070;
+    color: white;
+}
+select:has(> option[value="dem?"]:checked) {
+    background-color: #627ef9;
+    color: white;
+}
+select:has(> option[value="rep!"]:checked) {
+    background-color: #6d0707;
+    color: white;
+}
+select:has(> option[value="rep?"]:checked) {
+    background-color: #e60000;
+    color: white;
+}
+option {
+    background-color: black;
+    color: white;
+}
+</style>
 </head>
 <body>
     <h1>Presidential Election Victory Path Calculator</h1>
