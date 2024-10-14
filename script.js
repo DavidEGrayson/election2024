@@ -197,9 +197,15 @@ function calculate_paths() {
 
   var votes_to_win = total_votes / 2 + 1;
 
-  var allow_leans = document.getElementById('allow_leans').checked;
-  var base_desc = allow_leans ? 'likely' : 'likely + leaning';
-  var threshold = allow_leans ? 1 : 0;
+  var allow_rep_leans = document.getElementById('allow_rep_leans').checked;
+  var allow_dem_leans = document.getElementById('allow_dem_leans').checked;
+  var thresholds = {
+    null: 0,
+    'rep': allow_rep_leans ? 1 : 0,
+    'dem': allow_dem_leans ? 1 : 0,
+  };
+  console.log(thresholds)
+  var base_desc = thresholds[party] == 0 ? 'likely' : 'likely + leaning';
 
   const unsure_districts = [];
 
@@ -207,7 +213,7 @@ function calculate_paths() {
   let tossup_votes = 0;
   districts.forEach(district => {
     const call = calls[district_select_map[district.code].value];
-    if (call.miracle_points <= threshold) {
+    if (call.miracle_points <= thresholds[call.party]) {
       tossup_votes += district.votes;
       unsure_districts.push(district);
     }
