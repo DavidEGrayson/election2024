@@ -83,11 +83,16 @@ table.paths td {
 <h2>Calculation</h2>
 
 <div class="options">
-<label for="party">Select Party:</label>
+<label for="party">Select party:</label>
 <select id="party">
     <option value="dem">Democrat (Kamala Harris)</option>
     <option value="rep">Republican (Donald Trump)</option>
 </select>
+<br><br>
+<label for="allow_leans">
+  <input type="checkbox" id="allow_leans">
+  Allow leaning districts to vote either way
+</label>
 </div>
 
 <button id="calculate">Calculate paths</button>

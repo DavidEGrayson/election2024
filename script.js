@@ -84,10 +84,10 @@ const district_select_map = {};
 
 const calls = {
   'tossup': { name: 'Toss-up', party: null, miracle_points: 0 },
-  'rep?': { name: 'Republican (leans)', party: 'rep', miracle_points: 1 },
-  'dem?': { name: 'Democrat (leans)', party: 'dem', miracle_points: 1 },
-  'rep!': { name: 'Republican (likely)', party: 'rep', miracle_points: 100 },
-  'dem!': { name: 'Democrat (likely)', party: 'dem', miracle_points: 100 },
+  'rep?': { name: 'Leans Republican', party: 'rep', miracle_points: 1 },
+  'dem?': { name: 'Leans Democrat', party: 'dem', miracle_points: 1 },
+  'rep!': { name: 'Likely Republican', party: 'rep', miracle_points: 100 },
+  'dem!': { name: 'Likely Democrat', party: 'dem', miracle_points: 100 },
 };
 
 const party_name = {
@@ -197,18 +197,22 @@ function calculate_paths() {
 
   var votes_to_win = total_votes / 2 + 1;
 
+  var allow_leans = document.getElementById('allow_leans').checked;
+  var base_desc = allow_leans ? 'likely' : 'likely + leaning';
+  var threshold = allow_leans ? 1 : 0;
+
   const unsure_districts = [];
 
   let base_votes = 0;
   let tossup_votes = 0;
   districts.forEach(district => {
     const call = calls[district_select_map[district.code].value];
-    if (call.party == party) {
-      base_votes += district.votes;
-    }
-    else if (call.party == null) {
+    if (call.miracle_points <= threshold) {
       tossup_votes += district.votes;
       unsure_districts.push(district);
+    }
+    else if (call.party == party) {
+      base_votes += district.votes;
     }
   });
 
@@ -218,7 +222,7 @@ function calculate_paths() {
 
   var sentence = "";
   if (base_votes >= votes_to_win) {
-    output_str(`The ${party_name[party]} has ${base_votes} votes (likely + leaning), which is enough to win!`);
+    output_str(`The ${party_name[party]} has ${base_votes} votes (${base_desc}), which is enough to win!`);
     return;
   }
   if (base_votes + tossup_votes < votes_to_win) {
@@ -227,7 +231,7 @@ function calculate_paths() {
   }
 
   const votes_needed = votes_to_win - base_votes;
-  output_str(`The ${party_name[party]} has ${base_votes} votes (likely + leaning) and needs ${votes_needed} more.`)
+  output_str(`The ${party_name[party]} has ${base_votes} votes (${base_desc}) and needs ${votes_needed} more.`)
   var paths = find_paths(unsure_districts, votes_needed);
   paths = paths.map(calculate_path_stats)
   output_paths(unsure_districts, paths);
