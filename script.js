@@ -182,6 +182,14 @@ function output_paths(unsure_districts, paths) {
   output_div.appendChild(table);
 }
 
+function output_scroll()
+{
+  document.getElementById("output").scrollIntoView({
+    behavior: "smooth", // Optional: Makes the scroll smooth
+    block: "start"      // Scrolls to the top of the element
+  });
+}
+
 function calculate_path_stats(code_list) {
   var path = { votes: 0, code_list: code_list }
   code_list.forEach(code => {
@@ -241,6 +249,8 @@ function calculate_paths() {
   var paths = find_paths(unsure_districts, votes_needed);
   paths = paths.map(calculate_path_stats)
   output_paths(unsure_districts, paths);
+
+  output_scroll();
 }
 
 function find_paths(unsure_districts, votes_needed) {
