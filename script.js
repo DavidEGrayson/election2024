@@ -205,7 +205,7 @@ function calculate_paths() {
     'dem': allow_dem_leans ? 1 : 0,
   };
   console.log(thresholds)
-  var base_desc = thresholds[party] == 0 ? 'likely' : 'likely + leaning';
+  var base_desc = thresholds[party] == 0 ? 'likely + leaning' : 'likely';
 
   const unsure_districts = [];
 
