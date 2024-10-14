@@ -165,12 +165,20 @@ function output_paths(unsure_districts, paths) {
       }
       row.appendChild(td);
     })
-    var td_votes = document.createElement('td')
+    var td_votes = document.createElement('td');
     td_votes.className = 'votes';
     td_votes.textContent = '+' + path.votes;
     row.appendChild(td_votes);
     table.appendChild(row);
   });
+  var td_for_count = document.createElement('td');
+  td_for_count.colSpan = unsure_districts.length;
+  td_for_count.className = "path_count";
+  td_for_count.textContent = "Path count: " + paths.length;
+  var row_for_count = document.createElement('tr');
+  row_for_count.appendChild(td_for_count);
+  table.appendChild(row_for_count);
+
   output_div.appendChild(table);
 }
 
