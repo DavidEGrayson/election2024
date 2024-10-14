@@ -61,7 +61,7 @@ const districts = [
   { code: 'OR', name: 'Oregon', votes: 8, default: 'dem!' },
   { code: 'RI', name: 'Rhode Island', votes: 4, default: 'dem!' },
   { code: 'VT', name: 'Vermont', votes: 3, default: 'dem!' },
-  { code: 'WA', name: 'Washingtone', votes: 12, default: 'dem!' },
+  { code: 'WA', name: 'Washington', votes: 12, default: 'dem!' },
 ];
 
 var total_votes = 0;
