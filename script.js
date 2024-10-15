@@ -75,8 +75,6 @@ if (total_votes != 538) {
 const district_map = {};
 districts.forEach(d => { district_map[d.code] = d; })
 
-const district_select_map = {};
-
 const calls = {
   'tossup': { name: 'Toss-up', party: null, miracle_points: 0 },
   'rep?': { name: 'Leans Republican', party: 'rep', miracle_points: 1 },
@@ -119,14 +117,15 @@ function populate_districts() {
     td_call.appendChild(select);
     var row = document.createElement('tr');
     if (call.miracle_points > 50) {
-      row.className = "likely";
+      row.className = "predictable hidden";
     }
     row.appendChild(td_code);
     row.appendChild(td_name);
     row.appendChild(td_votes);
     row.appendChild(td_call);
     table.appendChild(row);
-    district_select_map[district.code] = select
+    district.dom_row = row
+    district.dom_select = select
   });
 }
 
@@ -217,7 +216,7 @@ function calculate_paths() {
   let base_votes = 0;
   let tossup_votes = 0;
   districts.forEach(district => {
-    const call = calls[district_select_map[district.code].value];
+    const call = calls[district_map[district.code].dom_select.value];
     if (call.miracle_points <= thresholds[call.party]) {
       tossup_votes += district.votes;
       unsure_districts.push(district);
@@ -243,7 +242,7 @@ function calculate_paths() {
     return;
   }
   if (base_votes + tossup_votes < votes_to_win) {
-    output_str(`The ${party_name[party]} cannot get more than ${base_votes + tossup_votes} votes (likely + leaning + toss-up)!`)
+    output_str(`The ${party_name[party]} cannot get more than ${base_votes + tossup_votes} votes!`)
     return;
   }
 
@@ -302,10 +301,19 @@ function find_paths(unsure_districts, votes_needed) {
   return paths;
 }
 
+function update_district_visibility() {
+  var show_all = document.getElementById('show_all').checked;
+  console.log("udv")
+  districts.forEach(district => {
+    console.log(district.code)
+    var show = show_all || !district.default.endsWith('!')
+      || district.dom_select.value != district.default;
+    district.dom_row.classList.toggle('hidden', !show);
+  })
+}
+
 document.getElementById('calculate').addEventListener('click', calculate_paths);
 
-document.getElementById('show_all').addEventListener('change', function() {
-  document.body.classList.toggle('show_all', this.checked);
-});
+document.getElementById('show_all').addEventListener('change', update_district_visibility);
 
 populate_districts();
