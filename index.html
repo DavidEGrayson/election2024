@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Presidential Victory Path Calculator</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presidential Victory Path Calculator</title>
 <style>
 body {
   background-color: #222222;
   color: #dddddd;
   font-family: Verdana, sans-serif;
+}
+a {
+  color: lightblue;
+}
+a:visited {
+  color: pink;
 }
 div.options {
   margin-bottom: 1em;
@@ -74,6 +80,11 @@ button {
 
 <h1>Presidential Election Victory Path Calculator</h1>
 
+<p>Written by <a href="https://www.davidegrayson.com" target="_new">DavidEGrayson</a>,
+inspired by
+<a href="https://www.thebigquestions.com/2024/10/01/harriss-1922-paths-to-victory/" target="_new">Steve Landsburg</a>.
+</p>
+
 <h2>Electoral District Calls</h2>
 <div class="options">
 <label for="show_all">
@@ -89,8 +100,8 @@ button {
 <div class="options">
 <label for="party">Select party:
 <select id="party">
-    <option value="dem">Democrat (Kamala Harris)</option>
-    <option value="rep">Republican (Donald Trump)</option>
+  <option value="dem">Democrat (Kamala Harris)</option>
+  <option value="rep">Republican (Donald Trump)</option>
 </select>
 </label>
 <label for="allow_rep_leans">
