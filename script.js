@@ -143,34 +143,31 @@ function output_str(obj) {
 }
 
 function output_paths(unsure_districts, paths) {
-  var table = document.createElement('table');
-  table.className = "paths";
-
-  paths.forEach(path => {
+  function path_line(path) {
     var district_list = path.code_list;
-    var row = document.createElement('tr');
-    row.className = "path";
+    var line = '';
+    var item;
     unsure_districts.forEach(district => {
-      var td = document.createElement('td');
-      td.className = 'code';
       if (district_list.includes(district.code)) {  // calling includes could be slow
-        td.textContent = district.code;
+        item = district.code + " ";
       }
       else {
-        td.textContent = "-";
+        item = "-";
       }
-      row.appendChild(td);
+      item = item.padEnd(4, ' ')
+      line += item;
     })
-    var td_votes = document.createElement('td');
-    td_votes.className = 'votes';
-    var msg = '+' + path.votes;
-    if (path.tie) { msg += ' TIE' }
-    td_votes.innerHTML = msg;
-    row.appendChild(td_votes);
-    table.appendChild(row);
-  });
-
-  output_div.appendChild(table);
+    item = '+' + path.votes;
+    item = item.padStart(4, ' ')
+    line += item;
+    if (path.tie) { line += ' TIE' }
+    line += '\n';
+    return line
+  }
+  var text = paths.map(path_line).join('');
+  var elem = document.createElement('pre');
+  elem.textContent = text;
+  output_div.appendChild(elem);
 }
 
 function output_scroll()
@@ -210,7 +207,7 @@ function calculate_paths() {
     'rep': allow_rep_leans ? 1 : 0,
     'dem': allow_dem_leans ? 1 : 0,
   };
-  var base_desc = thresholds[party] == 0 ? 'likely + leaning' : 'likely';
+  //var base_desc = thresholds[party] == 0 ? 'likely + leaning' : 'likely';
 
   var show_ties = document.getElementById('show_ties').checked;
   if ((total_votes % 2) == 1) { show_ties = false; }
@@ -242,7 +239,7 @@ function calculate_paths() {
 
   var sentence = "";
   if (base_votes >= votes_to_win) {
-    output_str(`The ${party_name[party]} has ${base_votes} votes (${base_desc}), which is enough to win!`);
+    output_str(`The ${party_name[party]} has ${base_votes} votes, which is enough to win!`);
     return;
   }
   if (base_votes + tossup_votes < votes_to_win) {
@@ -251,25 +248,35 @@ function calculate_paths() {
   }
 
   const votes_needed = votes_to_win - base_votes;
-  var msg = `The ${party_name[party]} has ${base_votes} votes (${base_desc})`;
+  var msg = `The ${party_name[party]} has ${base_votes} votes`;
   msg += ` and needs ${votes_needed} more to win`;
   if (show_ties) {
-    msg += `or ${votes_needed-1} more to tie.`;
+    msg += ` or ${votes_needed-1} more to tie`;
   }
   msg += '.';
   output_str(msg);
+
+  var start = performance.now();
 
   // TODO: would be nice if the output above could be visible to the user
   // while we calculate the paths
   var paths = find_paths(unsure_districts, votes_needed);
   output_str(`There are ${paths.length} paths to get those votes.`)
 
+  var duration = performance.now() - start;
+  console.log("Path calculation time (ms): " + duration);
+
   paths = paths.map(calculate_path_stats)
   if (show_ties) {
     unsure_districts.pop()  // remove the TB district
   }
 
+  start = performance.now();
+
   output_paths(unsure_districts, paths);
+
+  var duration = performance.now() - start;
+  console.log("Path output time (ms): " + duration);
 
   output_scroll();
 }
@@ -301,5 +308,4 @@ document.getElementById('show_all').addEventListener('change', function() {
   document.body.classList.toggle('show_all', this.checked);
 });
 
-// Populate districts on page load
 populate_districts();
