@@ -13,6 +13,10 @@ body {
 div.options {
   margin-bottom: 1em;
 }
+div.options label {
+  display: block;
+  margin-bottom: 1em;
+}
 .code {
   font-family: monospace;
 }
@@ -38,23 +42,23 @@ option {
   background-color: black;
   color: white;
 }
-select:has(> option[value="tossup"]:checked) {
+select:has(option[value="tossup"]:checked) {
   background-color: gray;
   color: white;
 }
-select:has(> option[value="dem!"]:checked) {
+select:has(option[value="dem!"]:checked, option[value="dem"]:checked) {
   background-color: #031070;
   color: white;
 }
-select:has(> option[value="dem?"]:checked) {
+select:has(option[value="dem?"]:checked) {
   background-color: #627ef9;
   color: white;
 }
-select:has(> option[value="rep!"]:checked) {
+select:has(option[value="rep!"]:checked, option[value="rep"]:checked) {
   background-color: #6d0707;
   color: white;
 }
-select:has(> option[value="rep?"]:checked) {
+select:has(option[value="rep?"]:checked) {
   background-color: #e60000;
   color: white;
 }
@@ -86,22 +90,20 @@ button {
 <h2>Calculation</h2>
 
 <div class="options">
-<label for="party">Select party:</label>
+<label for="party">Select party:
 <select id="party">
     <option value="dem">Democrat (Kamala Harris)</option>
     <option value="rep">Republican (Donald Trump)</option>
 </select>
-<br><br>
+</label>
 <label for="allow_rep_leans">
   <input type="checkbox" id="allow_rep_leans">
   Allow Republican leaning districts to vote either way
 </label>
-<br><br>
 <label for="allow_dem_leans">
   <input type="checkbox" id="allow_dem_leans">
   Allow Democrat leaning districts to vote either way
 </label>
-<br><br>
 <label for="show_ties">
   <input type="checkbox" id="show_ties">
   Show paths to a tie
