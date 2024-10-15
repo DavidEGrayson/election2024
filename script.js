@@ -150,6 +150,7 @@ function output_str(obj) {
 function output_paths(unsure_districts, paths) {
   var table = document.createElement('table');
   table.className = "paths";
+
   paths.forEach(path => {
     var district_list = path.code_list;
     var row = document.createElement('tr');
@@ -171,13 +172,6 @@ function output_paths(unsure_districts, paths) {
     row.appendChild(td_votes);
     table.appendChild(row);
   });
-  var td_for_count = document.createElement('td');
-  td_for_count.colSpan = unsure_districts.length;
-  td_for_count.className = "path_count";
-  td_for_count.textContent = "Path count: " + paths.length;
-  var row_for_count = document.createElement('tr');
-  row_for_count.appendChild(td_for_count);
-  table.appendChild(row_for_count);
 
   output_div.appendChild(table);
 }
@@ -246,7 +240,10 @@ function calculate_paths() {
 
   const votes_needed = votes_to_win - base_votes;
   output_str(`The ${party_name[party]} has ${base_votes} votes (${base_desc}) and needs ${votes_needed} more.`)
+  // TODO: would be nice if the output above could be visible to the user
+  // while we calculate the paths
   var paths = find_paths(unsure_districts, votes_needed);
+  output_str(`There are ${paths.length} paths to get those votes.`)
   paths = paths.map(calculate_path_stats)
   output_paths(unsure_districts, paths);
 
