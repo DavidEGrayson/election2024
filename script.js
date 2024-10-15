@@ -71,11 +71,6 @@ for (let i = 0; i < districts.length; i++) {
 if (total_votes != 538) {
   window.alert("Incorrect data, total_votes = " + total_votes);
 }
-if ((total_votes % 2) == 0) {
-  // Model the tiebreaking role of congress and/or unfaithful electors by
-  // making them a district with one vote, but don't count it in total_votes.
-  districts.push({ code: 'TB', name: 'Tiebreaker', votes: 1, default: 'tossup' })
-}
 
 const district_map = {};
 districts.forEach(d => { district_map[d.code] = d; })
@@ -168,7 +163,9 @@ function output_paths(unsure_districts, paths) {
     })
     var td_votes = document.createElement('td');
     td_votes.className = 'votes';
-    td_votes.textContent = '+' + path.votes;
+    var msg = '+' + path.votes;
+    if (path.tie) { msg += ' TIE' }
+    td_votes.innerHTML = msg;
     row.appendChild(td_votes);
     table.appendChild(row);
   });
@@ -185,11 +182,18 @@ function output_scroll()
 }
 
 function calculate_path_stats(code_list) {
-  var path = { votes: 0, code_list: code_list }
+  var tie = false;
+  if (code_list[code_list.length - 1] == 'TB') {
+    code_list = code_list.slice(0, -1);
+    tie = true;
+  }
+
+  votes = 0
   code_list.forEach(code => {
-    path.votes += district_map[code].votes;
+    votes += district_map[code].votes;
   });
-  return path;
+
+  return { votes: votes, code_list: code_list, tie: tie }
 }
 
 function calculate_paths() {
@@ -206,8 +210,10 @@ function calculate_paths() {
     'rep': allow_rep_leans ? 1 : 0,
     'dem': allow_dem_leans ? 1 : 0,
   };
-  console.log(thresholds)
   var base_desc = thresholds[party] == 0 ? 'likely + leaning' : 'likely';
+
+  var show_ties = document.getElementById('show_ties').checked;
+  if ((total_votes % 2) == 1) { show_ties = false; }
 
   const unsure_districts = [];
 
@@ -228,6 +234,12 @@ function calculate_paths() {
   // descending order by votes.
   unsure_districts.sort((d1, d2) => d2.votes - d1.votes);
 
+  if (show_ties) {
+    // Model the tiebreaking role of congress and/or unfaithful electors by
+    // making them a district with one vote.
+    unsure_districts.push({ code: 'TB', votes: 1 })
+  }
+
   var sentence = "";
   if (base_votes >= votes_to_win) {
     output_str(`The ${party_name[party]} has ${base_votes} votes (${base_desc}), which is enough to win!`);
@@ -239,12 +251,24 @@ function calculate_paths() {
   }
 
   const votes_needed = votes_to_win - base_votes;
-  output_str(`The ${party_name[party]} has ${base_votes} votes (${base_desc}) and needs ${votes_needed} more.`)
+  var msg = `The ${party_name[party]} has ${base_votes} votes (${base_desc})`;
+  msg += ` and needs ${votes_needed} more to win`;
+  if (show_ties) {
+    msg += `or ${votes_needed-1} more to tie.`;
+  }
+  msg += '.';
+  output_str(msg);
+
   // TODO: would be nice if the output above could be visible to the user
   // while we calculate the paths
   var paths = find_paths(unsure_districts, votes_needed);
   output_str(`There are ${paths.length} paths to get those votes.`)
+
   paths = paths.map(calculate_path_stats)
+  if (show_ties) {
+    unsure_districts.pop()  // remove the TB district
+  }
+
   output_paths(unsure_districts, paths);
 
   output_scroll();

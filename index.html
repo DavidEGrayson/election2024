@@ -58,8 +58,11 @@ select:has(> option[value="rep?"]:checked) {
   background-color: #e60000;
   color: white;
 }
-table.paths td {
+table.paths td.code {
   text-align: center;
+}
+table.paths td.votes {
+  text-align: left;
 }
 button {
   font-size: 18pt;
@@ -97,6 +100,11 @@ button {
 <label for="allow_dem_leans">
   <input type="checkbox" id="allow_dem_leans">
   Allow Democrat leaning districts to vote either way
+</label>
+<br><br>
+<label for="show_ties">
+  <input type="checkbox" id="show_ties">
+  Show paths to a tie
 </label>
 </div>
 
