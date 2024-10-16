@@ -64,6 +64,8 @@ const districts = [
   { code: 'WA', name: 'Washington', votes: 12, default: 'dem!' },
 ];
 
+const path_count_limit = 10000
+
 var total_votes = 0;
 for (let i = 0; i < districts.length; i++) {
   total_votes += districts[i]['votes'];
@@ -260,7 +262,8 @@ function calculate_paths() {
   // TODO: would be nice if the output above could be visible to the user
   // while we calculate the paths
   var paths = find_paths(unsure_districts, votes_needed);
-  output_str(`There are ${paths.length} paths to get those votes.`)
+  var ormore = (paths.length >= path_count_limit) ? ' or more' : '';
+  output_str(`There are ${paths.length}${ormore} paths to get those votes.`)
 
   var duration = performance.now() - start;
   console.log("Path calculation time (ms): " + duration);
@@ -284,6 +287,8 @@ function find_paths(unsure_districts, votes_needed) {
   const paths = [];
 
   function dfs(path, remaining_votes, index) {
+    if (paths.length >= path_count_limit) { return; }
+
     if (remaining_votes <= 0) {
       paths.push(path);
       return;
