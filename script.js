@@ -13,14 +13,14 @@ const districts = [
   // 10 more districts that appear to be at least barely contestable:
   { code: 'TX', name: 'Texas', votes: 40, default: 'rep?' },
   { code: 'FL', name: 'Florida', votes: 30, default: 'rep?' },
-  { code: 'NE2', name: 'Nebraska 2', votes: 1, default: 'rep?' },
+  { code: 'ME2', name: 'Maine 2', votes: 1, default: 'rep?' },
   { code: 'OH', name: 'Ohio', votes: 17, default: 'rep?' },
   { code: 'VA', name: 'Virginia', votes: 13, default: 'dem?' },
   { code: 'MN', name: 'Minnesota', votes: 10, default: 'dem?' },
   { code: 'NM', name: 'New Mexico', votes: 5, default: 'dem?' },
   { code: 'NH', name: 'New Hampshire', votes: 4, default: 'dem?' },
   { code: 'ME', name: 'Maine', votes: 2, default: 'dem?' },
-  { code: 'ME2', name: 'Maine 2', votes: 1, default: 'dem?' },
+  { code: 'NE2', name: 'Nebraska 2', votes: 1, default: 'dem?' },
 
   // Predictable districts
   { code: 'AL', name: 'Alabama', votes: 9, default: 'rep!' },
