@@ -53,7 +53,7 @@ const districts = [
   { code: 'DC', name: 'District of Columbia', votes: 3, default: 'dem!' },
   { code: 'HI', name: 'Hawaii', votes: 4, default: 'dem!' },
   { code: 'IL', name: 'Illinois', votes: 19, default: 'dem!' },
-  { code: 'ME1', name: 'Maine', votes: 1, default: 'dem!' },
+  { code: 'ME1', name: 'Maine 1', votes: 1, default: 'dem!' },
   { code: 'MD', name: 'Maryland', votes: 10, default: 'dem!' },
   { code: 'MA', name: 'Massachusetts', votes: 11, default: 'dem!' },
   { code: 'NJ', name: 'New Jersey', votes: 14, default: 'dem!' },
